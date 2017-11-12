@@ -6,36 +6,14 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtWidgets, QtGui
+from label import RubberbandEnhancedLabel
 import Tkinter as tk
 import tkFileDialog
 
 class Ui_Graphology(object):
 
-
-    def __init__(self):
-        self.mainContainer = None
-        self.gridLayout = None
-        self.verticalLayout = None
-        self.verticalLayout_2 = None
-        self.loadImage = None
-        self.analysis = None
-        self.featureBox = None
-        self.pushButton_1 = None
-        self.pushButton_2 = None
-        self.pushButton_3 = None
-        self.pushButton_4 = None
-        self.pushButton_5 = None
-        self.pushButton_6 = None
-        self.label_1 = None
-        self.label_2 = None
-        self.label_3 = None
-        self.label_4 = None
-        self.label_5 = None
-        self.label_6 = None
-        self.scrollArea = None
-        self.scrollAreaWidgetContents_3 = None
-        self.statusBar = None
 
     def setupUi(self, Graphology):
         Graphology.setObjectName("Graphology")
@@ -67,6 +45,7 @@ class Ui_Graphology(object):
         self.analysis.setFlat(False)
         self.analysis.setObjectName("analysis")
         self.gridLayout.addWidget(self.analysis, 0, 1, 1, 1)
+        self.analysis.clicked.connect(self.grabPartOfPicture)
         self.featureBox = QtWidgets.QGroupBox(self.mainContainer)
         self.featureBox.setObjectName("featureBox")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.featureBox)
@@ -84,13 +63,14 @@ class Ui_Graphology(object):
         self.pushButton_6.setObjectName("pushButton_6")
         self.verticalLayout.addWidget(self.pushButton_6)
         self.gridLayout.addWidget(self.featureBox, 1, 5, 2, 1)
-        self.label_1 = QtWidgets.QLabel(self.mainContainer)
-        self.label_1.setAutoFillBackground(True)
-        self.label_1.setFrameShape(QtWidgets.QFrame.Box)
-        self.label_1.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.label_1.setLineWidth(3)
-        self.label_1.setObjectName("label_1")
-        self.gridLayout.addWidget(self.label_1, 1, 0, 2, 4)
+        self.mainPicture = RubberbandEnhancedLabel(self.mainContainer)
+        self.mainPicture.setAutoFillBackground(True)
+        self.mainPicture.setFrameShape(QtWidgets.QFrame.Box)
+        self.mainPicture.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.mainPicture.setLineWidth(3)
+        self.mainPicture.setObjectName("mainPicture")
+        self.mainPicture.setAlignment(QtCore.Qt.AlignCenter)
+        self.gridLayout.addWidget(self.mainPicture, 1, 0, 2, 4)
         self.scrollArea = QtWidgets.QScrollArea(self.mainContainer)
         self.scrollArea.setMinimumSize(QtCore.QSize(0, 0))
         self.scrollArea.setMaximumSize(QtCore.QSize(225, 600))
@@ -131,7 +111,7 @@ class Ui_Graphology(object):
         self.pushButton_5.setText(_translate("Graphology", "PushButton"))
         self.pushButton_4.setText(_translate("Graphology", "PushButton"))
         self.pushButton_6.setText(_translate("Graphology", "PushButton"))
-        self.label_1.setText(_translate("Graphology", ""))
+        self.mainPicture.setText(_translate("Graphology", ""))
         self.label_2.setText(_translate("Graphology", "TextLabel"))
         self.label_3.setText(_translate("Graphology", "TextLabel"))
         self.label_4.setText(_translate("Graphology", "TextLabel"))
@@ -141,5 +121,10 @@ class Ui_Graphology(object):
         root.withdraw()
         picture_file_path = tkFileDialog.askopenfilename(filetypes=(("Pictures", "*.jpg"), ("All files", "*.*") ))
         pixmap = QtGui.QPixmap(picture_file_path)
-        self.label_1.setPixmap(pixmap)
-        self.label_1.resize(pixmap.width(),pixmap.height())
+        pixmap_resized = pixmap.scaled(self.mainPicture.size(), QtCore.Qt.KeepAspectRatio)
+        self.mainPicture.setPixmap(pixmap_resized)
+
+    def grabPartOfPicture(self):
+        pixmap = self.pixmap((self.mainPicture.selection.geometry()))
+        #self.label_2.setPixmap()
+
