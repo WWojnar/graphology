@@ -6,8 +6,9 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtWidgets
-
+from PyQt5 import QtCore, QtWidgets, QtGui
+import Tkinter as tk
+import tkFileDialog
 
 class Ui_Graphology(object):
 
@@ -47,15 +48,16 @@ class Ui_Graphology(object):
         self.gridLayout.setHorizontalSpacing(40)
         self.gridLayout.setVerticalSpacing(12)
         self.gridLayout.setObjectName("gridLayout")
-        self.loadImage = QtWidgets.QPushButton(self.mainContainer)
+        self.btnLoadImage = QtWidgets.QPushButton(self.mainContainer)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.loadImage.sizePolicy().hasHeightForWidth())
-        self.loadImage.setSizePolicy(sizePolicy)
-        self.loadImage.setFlat(False)
-        self.loadImage.setObjectName("loadImage")
-        self.gridLayout.addWidget(self.loadImage, 0, 0, 1, 1)
+        sizePolicy.setHeightForWidth(self.btnLoadImage.sizePolicy().hasHeightForWidth())
+        self.btnLoadImage.setSizePolicy(sizePolicy)
+        self.btnLoadImage.setFlat(False)
+        self.btnLoadImage.setObjectName("btnLoadImage")
+        self.gridLayout.addWidget(self.btnLoadImage, 0, 0, 1, 1)
+        self.btnLoadImage.clicked.connect(self.loadImageMethod)
         self.analysis = QtWidgets.QPushButton(self.mainContainer)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -116,22 +118,28 @@ class Ui_Graphology(object):
         self.statusBar = QtWidgets.QStatusBar(Graphology)
         self.statusBar.setObjectName("statusBar")
         Graphology.setStatusBar(self.statusBar)
-
         self.retranslateUi(Graphology)
         QtCore.QMetaObject.connectSlotsByName(Graphology)
 
     def retranslateUi(self, Graphology):
         _translate = QtCore.QCoreApplication.translate
         Graphology.setWindowTitle(_translate("Graphology", "Graphology"))
-        self.loadImage.setText(_translate("Graphology", "Load Image"))
+        self.btnLoadImage.setText(_translate("Graphology", "Load Image"))
         self.analysis.setText(_translate("Graphology", "Analysis"))
         self.featureBox.setTitle(_translate("Graphology", "Features"))
         self.pushButton_3.setText(_translate("Graphology", "PushButton"))
         self.pushButton_5.setText(_translate("Graphology", "PushButton"))
         self.pushButton_4.setText(_translate("Graphology", "PushButton"))
         self.pushButton_6.setText(_translate("Graphology", "PushButton"))
-        self.label_1.setText(_translate("Graphology", "TextLabel"))
+        self.label_1.setText(_translate("Graphology", ""))
         self.label_2.setText(_translate("Graphology", "TextLabel"))
         self.label_3.setText(_translate("Graphology", "TextLabel"))
         self.label_4.setText(_translate("Graphology", "TextLabel"))
 
+    def loadImageMethod(self):
+        root = tk.Tk()
+        root.withdraw()
+        picture_file_path = tkFileDialog.askopenfilename(filetypes=(("Pictures", "*.jpg"), ("All files", "*.*") ))
+        pixmap = QtGui.QPixmap(picture_file_path)
+        self.label_1.setPixmap(pixmap)
+        self.label_1.resize(pixmap.width(),pixmap.height())
