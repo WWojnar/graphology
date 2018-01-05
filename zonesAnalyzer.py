@@ -1,5 +1,7 @@
 
 
+#TODO: add more advanced analysis (submisive zones)
+
 class ZonesAnalyzer:
 
     @staticmethod
@@ -15,12 +17,25 @@ class ZonesAnalyzer:
         dominanceMinimum = 0.7
 
         if upperZoneSize > dominanceMinimum*(middleZoneSize+lowerZoneSize):
-            return "upper zone dominant"
+            return {
+                "zoneDominance": "upper zone dominant",
+                "analysis" : "intelligence and ambition, idealism, disorientation"
+            }
 
         if middleZoneSize > dominanceMinimum*(lowerZoneSize + upperZoneSize):
-            return "middle zone dominant"
+            return {
+                "zoneDominance": "middle zone dominant",
+                "analysis": "overly concerned for himself, sensitivity to feeling and experience"
+                            "low super-ego, leader type, strong willed, practical"
+            }
 
         if lowerZoneSize > dominanceMinimum*(upperZoneSize+middleZoneSize):
-            return "lower zone dominant"
+            return {
+                "zoneDominance": "lower zone dominant",
+                "analysis": "Driven excessively by instinctual wants, needs constant variety and change "
+            }
 
-        return "balanced"
+        return {
+            "zoneDominance": "balanced",
+            "analysis": "stability, involvement, initiative, balance"
+        }
