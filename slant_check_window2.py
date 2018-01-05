@@ -1,4 +1,3 @@
-
 from PyQt5 import QtWidgets
 import sys
 
@@ -37,10 +36,10 @@ class Ui_Slantchecker(object):
         QtCore.QMetaObject.connectSlotsByName(Slantchecker)
 
 
-if __name__ == '__main__':
-    app = QtWidgets.QApplication(sys.argv)
-    slantchecker = QtWidgets.QMainWindow()
-    ui = Ui_Slantchecker()
-    ui.setupUi(slantchecker)
-    slantchecker.show()
-    sys.exit(app.exec_())
+# if __name__ == '__main__':
+#     app = QtWidgets.QApplication(sys.argv)
+#     slantchecker = QtWidgets.QMainWindow()
+#     ui = Ui_Slantchecker()
+#     ui.setupUi(slantchecker)
+#     slantchecker.show()
+#     sys.exit(app.exec_())

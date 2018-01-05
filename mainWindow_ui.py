@@ -9,6 +9,7 @@
 
 from PyQt5 import QtCore, QtWidgets, QtGui
 from label import RubberbandEnhancedLabel
+from slant_check_window2 import Ui_Slantchecker
 import Tkinter as tk
 import tkFileDialog
 
@@ -53,6 +54,8 @@ class Ui_Graphology(object):
         self.pushButton_3 = QtWidgets.QPushButton(self.featureBox)
         self.pushButton_3.setObjectName("pushButton_3")
         self.verticalLayout.addWidget(self.pushButton_3)
+        self.pushButton_3.clicked.connect(self.openSlantChecker)
+        self.slantChecker = Ui_Slantchecker()
         self.pushButton_5 = QtWidgets.QPushButton(self.featureBox)
         self.pushButton_5.setObjectName("pushButton_5")
         self.verticalLayout.addWidget(self.pushButton_5)
@@ -107,7 +110,7 @@ class Ui_Graphology(object):
         self.btnLoadImage.setText(_translate("Graphology", "Load Image"))
         self.analysis.setText(_translate("Graphology", "Analysis"))
         self.featureBox.setTitle(_translate("Graphology", "Features"))
-        self.pushButton_3.setText(_translate("Graphology", "PushButton"))
+        self.pushButton_3.setText(_translate("Graphology", "Slant Checker"))
         self.pushButton_5.setText(_translate("Graphology", "PushButton"))
         self.pushButton_4.setText(_translate("Graphology", "PushButton"))
         self.pushButton_6.setText(_translate("Graphology", "PushButton"))
@@ -128,3 +131,6 @@ class Ui_Graphology(object):
         pixmap = self.pixmap((self.mainPicture.selection.geometry()))
         #self.label_2.setPixmap()
 
+
+    def openSlantChecker(self):
+        self.slantChecker.show()
