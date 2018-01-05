@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+from zonesAnalyzer import ZonesAnalyzer
 
 def onChange(pos):
     global img
@@ -19,15 +19,21 @@ def onChange(pos):
     cv2.line(dst,(0, bottomZoneTop),(20000,upperZoneTop),(0,255,0),2)
     cv2.line(dst,(0, bottomZoneBottom),(20000,upperZoneTop),(0,255,0),2)
 
+    separators = [upperZoneTop, middleZoneTop, bottomZoneTop, bottomZoneBottom]
+
+    print ZonesAnalyzer.analyze(separators)
+
+    print separators
+
 
 #Run Main
 if __name__ == "__main__" :
 
-    img = cv2.imread("test_logo.jpg", -1)
+    img = cv2.imread("zonesImages/middleZone.jpg", -1)
 
     dst = np.copy(img)
 
-    cv2.namedWindow("Result", cv2.WINDOW_NORMAL)
+    cv2.namedWindow("Result", cv2.WINDOW_AUTOSIZE)
 
     gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 

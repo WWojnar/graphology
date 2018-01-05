@@ -50,7 +50,7 @@ if __name__ == "__main__" :
 
     dst = np.copy(img)
 
-    cv2.namedWindow("Result", cv2.WINDOW_NORMAL)
+    cv2.namedWindow("Result", cv2.WINDOW_AUTOSIZE)
 
     gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 
