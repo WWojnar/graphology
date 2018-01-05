@@ -22,7 +22,7 @@ def onChange(pos):
     print linesGap
     print np.arange(0,2*width,int(linesGap))
 
-    for i in np.arange(-2*width,2*width,int(linesGap)):
+    for i in np.arange(-5*width,5*width,int(linesGap)):
         x1 = i
         y1 = 0
         x2 = int((height + a*x1)/a)
@@ -46,7 +46,7 @@ def onChange(pos):
 #Run Main
 if __name__ == "__main__" :
 
-    img = cv2.imread("test_logo.jpg", -1)
+    img = cv2.imread("slantImages/inclined.jpg", -1)
 
     dst = np.copy(img)
 
