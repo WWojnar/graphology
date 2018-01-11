@@ -2,7 +2,7 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 
 class RubberbandEnhancedLabel(QtWidgets.QLabel):
 
-
+    pixMapToShare = 0
     def __init__(self, parent=None):
         self.counter = 0
         QtWidgets.QLabel.__init__(self, parent)
@@ -44,4 +44,6 @@ class RubberbandEnhancedLabel(QtWidgets.QLabel):
             self.selection.setGeometry(QtCore.QRect(self.upper_left, self.lower_right).normalized())
             cropQPixmap = self.pixmap().copy(self.selection.geometry())
             cropQPixmap.save("samples/sample%s.jpg" % self.counter)
+            self.pixMapToShare = cropQPixmap
+
 
