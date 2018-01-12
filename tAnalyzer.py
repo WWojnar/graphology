@@ -6,6 +6,10 @@ def findTopLabel(edges):
     bestTopEdge = [(0, 0)]
     currentTopEdge = [(0, 0)]
     lastPoint = (0, 0)
+
+
+    iterationsAfterChangingTopEdge = 0
+
     for y in range(1, len(edges[0])):
 
         minBestTopEdge = 1000000
@@ -19,18 +23,21 @@ def findTopLabel(edges):
         for x in range(1, len(edges)):
             if edges[x][y] != 0:
 
-                if (len(currentTopEdge) < len(bestTopEdge) and (abs(minBestTopEdge - x) < 50 or abs(maxBestTopEdge-x)< 50)):
+                if (len(currentTopEdge) < len(bestTopEdge) and iterationsAfterChangingTopEdge> 10
+                    and (abs(minBestTopEdge - x) < 25 or abs(maxBestTopEdge-x)< 25 or ( x > minBestTopEdge and x < maxBestTopEdge))):
                     currentTopEdge = bestTopEdge
-                    lastPoint = bestTopEdge[len(bestTopEdge) - 1]
-
-                if (abs(lastPoint[1] - x) > 5):
-                    if len(bestTopEdge) < len(currentTopEdge):
-                        bestTopEdge = currentTopEdge
-                    currentTopEdge = []
-
+                    iterationsAfterChangingTopEdge = 0
+                else:
+                    if (abs(lastPoint[1] - x) > 3):
+                        if len(bestTopEdge) < len(currentTopEdge):
+                            bestTopEdge = currentTopEdge
+                        currentTopEdge = []
+                        iterationsAfterChangingTopEdge = 0
+                iterationsAfterChangingTopEdge+=1
                 currentTopEdge.append((y, x))
                 lastPoint = (y, x)
                 break
+
 
 
     if len(bestTopEdge) < len(currentTopEdge):
