@@ -2,6 +2,85 @@ import cv2
 import numpy as np
 
 
+def findVerticalStick(img, edges):
+
+    topPoint = (0,0)
+    for x in range(0,len(img)):
+        for y in range(0, len(img[x])):
+            if edges[x][y] > 0:
+                topPoint = (y,x)
+                break
+        if topPoint != (0,0):
+            break
+    print "topPoint", topPoint
+
+    verticalStick = [topPoint]
+
+    currentPoint=(topPoint[0], topPoint[1]+4)
+
+    while(currentPoint[1]<len(img)-10):
+        while(currentPoint[1]<len(img) and np.sum(img[currentPoint[1]][currentPoint[0]]) >0 ):
+            currentPoint = (currentPoint[0], currentPoint[1]+1)
+            verticalStick.append(currentPoint)
+
+        #TODO: IMPROVE THIS:
+        newPoint=(currentPoint[0]-5, currentPoint[1])
+        if(newPoint[0]>0 and np.sum(img[newPoint[1]][newPoint[0]]) >0):
+            currentPoint = newPoint
+        else:
+            newPoint = (currentPoint[0] + 5, currentPoint[1])
+            if (newPoint[0] > 0 and np.sum(img[newPoint[1]][newPoint[0]]) > 0):
+                currentPoint = newPoint
+            else:
+                newPoint = (currentPoint[0] - 20, currentPoint[1])
+                if (newPoint[0] > 0 and np.sum(img[newPoint[1]][newPoint[0]]) > 0):
+                    currentPoint = newPoint
+                else:
+                    newPoint = (currentPoint[0] + 20, currentPoint[1])
+                    if (newPoint[0] > 0 and np.sum(img[newPoint[1]][newPoint[0]]) > 0):
+                        currentPoint = newPoint
+                    else:
+                        break
+
+
+
+        verticalStick.append(currentPoint)
+
+    edgeLeft = []
+    edgeRight = []
+    thickness =[]
+    maxThickness = 80
+    for point in verticalStick:
+        x = point[1]
+
+        leftFoundEdge = (0,0)
+        edgeCounter = 0
+        for y in range(0, point[0]-1):
+            if edges[x][y]>0:
+                leftFoundEdge = (y,x)
+                edgeCounter = 0
+            edgeCounter+=1
+        if edgeCounter < maxThickness and leftFoundEdge != (0,0):
+            edgeLeft.append(leftFoundEdge)
+
+        rangeEnd = np.min([point[0]+maxThickness, len(edges[x])])
+        rightFoundEdge = (0,0)
+        for y in range(point[0], rangeEnd):
+            if edges[x][y]>0:
+                rightFoundEdge = (y,x)
+                edgeRight.append( rightFoundEdge )
+                break
+        if(rightFoundEdge != (0,0) and leftFoundEdge != (0,0)):
+            thickness.append(np.abs(rightFoundEdge[0]-leftFoundEdge[0]))
+
+
+
+
+
+    return (verticalStick, thickness, edgeLeft, edgeRight)
+
+
+
 def findTopLabel(edges):
     bestTopEdge = [(0, 0)]
     currentTopEdge = [(0, 0)]
@@ -122,6 +201,19 @@ def analyzeT(img):
             print "Label is falling"
         else:
             print "Label is rising"
+
+
+    (verticalStick, verticalThickness, leftEdgeStick, rightEdgeStick) = findVerticalStick(img, edges)
+    for point in verticalStick:
+        cv2.circle(img, point, 2, (125,125, 0), -1)
+
+    print verticalThickness
+
+    for point in leftEdgeStick:
+        cv2.circle(img, point, 2, (125,255, 0), -1)
+    for point in rightEdgeStick:
+        cv2.circle(img, point, 2, (255,125, 0), -1)
+
 
     return img
 
