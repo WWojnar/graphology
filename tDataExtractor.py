@@ -255,7 +255,7 @@ class TDataExtractor:
 
 
 
-    def getLabelThicknessAnalysis(self):
+    def getLabelTrendThicknessAnalysis(self):
         poly = np.polyfit(range(0, len(self.labelThickness)), self.labelThickness, 1)
         # [ 0.21965908  8.96886355] - rosnaca
         # [ -0.08947244  61.56185738] -malejaca
@@ -293,6 +293,28 @@ class TDataExtractor:
                 return "short"
             else:
                 return "long"
+
+    def getLabelThicknessAnalysis(self):
+        stemThickness =np.mean(self.stemThickness)
+
+        validThickness= []
+        for a in self.stemThickness:
+            if a-stemThickness < 20 and a > 10:
+                validThickness.append(a)
+        stemThickness = np.mean(validThickness)
+
+
+        labelThickness= np.mean(self.labelThickness)
+
+        ratio = labelThickness/stemThickness - 1
+        print labelThickness, " ", stemThickness, " ", ratio
+        if(abs(ratio)< 0.3):
+            return "normal"
+        else:
+            if ratio>0:
+                return "thick"
+            else:
+                return "thin"
 
     def getCrossingPositionAnalysis(self):
 
@@ -341,9 +363,10 @@ class TDataExtractor:
 
         self.drawAll()
         self.analysis["labelTrend"] = self.getLabelTrend()
-        self.analysis["labelThickness"] = self.getLabelThicknessAnalysis()
+        self.analysis["labelThicknessTrend"] = self.getLabelTrendThicknessAnalysis()
         self.analysis["crossingLength"] = self.getCrossingLengthAnalysis()
         self.analysis["crossingPosition"] = self.getCrossingPositionAnalysis()
+        self.analysis["labelThickness"] = self.getLabelThicknessAnalysis()
 
     def drawAll(self):
         self.drawPoints(self.topEdgeLabel, Colors.blue)
@@ -368,7 +391,7 @@ class TDataExtractor:
 
 if __name__ == '__main__':
 
-    for i in range(9,10):
+    for i in range(1,21):
         img = cv2.imread('tImages/t' + str(i) + '.png')
 
         extractor = TDataExtractor(img)
