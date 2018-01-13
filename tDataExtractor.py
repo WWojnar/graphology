@@ -296,13 +296,7 @@ class TDataExtractor:
 
     def getCrossingPositionAnalysis(self):
 
-        if self.crossingPoint == (0,0):
-            crossingPointY = 0
-            for p in self.labelCore:
-                crossingPointY += p[1]
-            crossingPointY /= len(self.labelCore)
-        else:
-            crossingPointY = self.crossingPoint[1]
+        crossingPointY = self.crossingPoint[1]
 
         stemMaxY= self.stemCore[len(self.stemCore)-1][1]
         stemMinY= self.stemCore[0][1]
@@ -325,6 +319,19 @@ class TDataExtractor:
             for stemPoint in self.labelCore:
                 if abs(corePoint[0]-stemPoint[0]) + abs(corePoint[1]-stemPoint[1]) < 5:
                     self.crossingPoint = corePoint
+        if self.crossingPoint == (0,0):
+            crossingPointY = 0
+            for p in self.labelCore:
+                crossingPointY += p[1]
+            crossingPointY /= len(self.labelCore)
+
+            crossingPointX = 0
+            for p in self.stemCore:
+                crossingPointX += p[0]
+            crossingPointX /= len(self.stemCore)
+
+            self.crossingPoint = ( crossingPointX, crossingPointY)
+
 
     def analyze(self):
         self.preprocessImage()
@@ -361,7 +368,7 @@ class TDataExtractor:
 
 if __name__ == '__main__':
 
-    for i in range(8,9):
+    for i in range(9,10):
         img = cv2.imread('tImages/t' + str(i) + '.png')
 
         extractor = TDataExtractor(img)
