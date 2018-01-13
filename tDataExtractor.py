@@ -28,10 +28,11 @@ class TDataExtractor:
         self.rightEdgeStem = []
         self.stemThickness = []
         self.crossingPoint = (0, 0)
+        self.drawingImag = img
 
     def drawPoints(self, points, color):
         for point in points:
-            cv2.circle(self.img, point, 1, color, -1)
+            cv2.circle(self.drawingImag, point, 1, color, -1)
 
     def preprocessImage(self):
         # gray = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
@@ -371,13 +372,13 @@ class TDataExtractor:
         self.drawPoints(self.leftEdgeStem, Colors.orange)
         self.drawPoints(self.labelCore, Colors.red)
 
-        cv2.circle(self.img, self.crossingPoint, 5, Colors.red, -1)
+        cv2.circle(self.drawingImag, self.crossingPoint, 5, Colors.red, -1)
 
     def getData(self):
         return self.analysis
 
     def getResultImg(self):
-        return self.img
+        return self.drawingImag
 
     def getResultEdges(self):
         return self.edges

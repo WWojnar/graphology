@@ -139,7 +139,7 @@ class Test_tDataExtractor:
         data = self.extractData('tImages/t17.png')
         assert data['labelTrend'] == 'vertical'
         assert data['labelThicknessTrend'] == 'constant'
-        assert data['crossingLength'] == 'long'
+        assert data['crossingLength'] == 'normal'
         assert data['crossingPosition'] == 'medium'
         assert data['labelThickness'] == 'normal'
 
