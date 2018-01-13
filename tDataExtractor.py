@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+from tAnalyzer import TAnalyzer
 
 class Colors:
     blue = (255, 0, 0)
@@ -143,7 +143,6 @@ class TDataExtractor:
                 break
         return foundPoint
 
-    # TODO: some helpers?
     def determineVerticalDirection(self, currentPoint, foundPoint):
         if foundPoint[1] > currentPoint[1]:
             direction = 1
@@ -255,7 +254,7 @@ class TDataExtractor:
 
 
 
-    def getLabelTrendThicknessAnalysis(self):
+    def getLabelTrendThicknessData(self):
         poly = np.polyfit(range(0, len(self.labelThickness)), self.labelThickness, 1)
         # [ 0.21965908  8.96886355] - rosnaca
         # [ -0.08947244  61.56185738] -malejaca
@@ -282,7 +281,7 @@ class TDataExtractor:
             else:
                 return "rising"
 
-    def getCrossingLengthAnalysis(self):
+    def getCrossingLengthData(self):
         stemLength =self.stemCore[len(self.stemCore)-1][1]-self.stemCore[0][1] +0.0
         labelLength= self.labelCore[len(self.labelCore)-1][0]-self.labelCore[0][0] +0.0
         ratio = stemLength/labelLength -1.2
@@ -294,7 +293,7 @@ class TDataExtractor:
             else:
                 return "long"
 
-    def getLabelThicknessAnalysis(self):
+    def getLabelThicknessData(self):
         stemThickness =np.mean(self.stemThickness)
 
         validThickness= []
@@ -302,12 +301,8 @@ class TDataExtractor:
             if a-stemThickness < 20 and a > 10:
                 validThickness.append(a)
         stemThickness = np.mean(validThickness)
-
-
         labelThickness= np.mean(self.labelThickness)
-
         ratio = labelThickness/stemThickness - 1
-        print labelThickness, " ", stemThickness, " ", ratio
         if(abs(ratio)< 0.3):
             return "normal"
         else:
@@ -316,7 +311,7 @@ class TDataExtractor:
             else:
                 return "thin"
 
-    def getCrossingPositionAnalysis(self):
+    def getCrossingPositionData(self):
 
         crossingPointY = self.crossingPoint[1]
 
@@ -363,10 +358,10 @@ class TDataExtractor:
 
         self.drawAll()
         self.analysis["labelTrend"] = self.getLabelTrend()
-        self.analysis["labelThicknessTrend"] = self.getLabelTrendThicknessAnalysis()
-        self.analysis["crossingLength"] = self.getCrossingLengthAnalysis()
-        self.analysis["crossingPosition"] = self.getCrossingPositionAnalysis()
-        self.analysis["labelThickness"] = self.getLabelThicknessAnalysis()
+        self.analysis["labelThicknessTrend"] = self.getLabelTrendThicknessData()
+        self.analysis["crossingLength"] = self.getCrossingLengthData()
+        self.analysis["crossingPosition"] = self.getCrossingPositionData()
+        self.analysis["labelThickness"] = self.getLabelThicknessData()
 
     def drawAll(self):
         self.drawPoints(self.topEdgeLabel, Colors.blue)
@@ -397,11 +392,16 @@ if __name__ == '__main__':
         extractor = TDataExtractor(img)
         extractor.analyze()
 
-        analysis = extractor.getData()
+        data = extractor.getData()
         resultImg = extractor.getResultImg()
         cv2.imshow("result" + str(i), resultImg)
         print "image :", str(i)
-        print analysis
+
+        print 'got data:'
+        print data
+
+        print 'analysis:'
+        print TAnalyzer.analyze(data)
         # resultEdged = extractor.getResultEdges()
         # cv2.imshow("edges" + str(i), resultEdged)
 
