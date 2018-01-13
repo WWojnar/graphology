@@ -41,9 +41,6 @@ def findVerticalStick(img, edges):
                         currentPoint = newPoint
                     else:
                         break
-
-
-
         verticalStick.append(currentPoint)
 
     edgeLeft = []
@@ -55,7 +52,8 @@ def findVerticalStick(img, edges):
 
         leftFoundEdge = (0,0)
         edgeCounter = 0
-        for y in range(0, point[0]-1):
+        rangeStart = np.max([point[0]+maxThickness, 0])
+        for y in range(rangeStart, point[0]-1):
             if edges[x][y]>0:
                 leftFoundEdge = (y,x)
                 edgeCounter = 0
