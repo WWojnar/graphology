@@ -6,130 +6,150 @@ import cv2
 class Test_tDataExtractor:
 
     def test_image1(self):
-        analysis = self.getAnalysis('tImages/t1.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'short'
+        data = self.extractData('tImages/t1.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'short'
+        assert data['crossingPosition'] == 'medium'
 
 
     def test_image2(self):
-        analysis = self.getAnalysis('tImages/t2.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'long'
+        data = self.extractData('tImages/t2.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'long'
+        assert data['crossingPosition'] == 'medium'
 
     def test_image3(self):
-        analysis = self.getAnalysis('tImages/t3.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'long'
+        data = self.extractData('tImages/t3.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'long'
+        assert data['crossingPosition'] == 'medium'
 
 
     def test_image4(self):
-        analysis = self.getAnalysis('tImages/t4.png')
-        assert analysis['labelTrend'] == 'falling'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'normal'
+        data = self.extractData('tImages/t4.png')
+        assert data['labelTrend'] == 'falling'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'normal'
+        assert data['crossingPosition'] == 'medium'
 
     def test_image5(self):
-        analysis = self.getAnalysis('tImages/t5.png')
-        assert analysis['labelTrend'] == 'rising'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'long'
+        data = self.extractData('tImages/t5.png')
+        assert data['labelTrend'] == 'rising'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'long'
+        assert data['crossingPosition'] == 'medium'
 
     def test_image6(self):
-        analysis = self.getAnalysis('tImages/t6.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'normal'
+        data = self.extractData('tImages/t6.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'normal'
+        assert data['crossingPosition'] == 'high'
 
     def test_image7(self):
-        analysis = self.getAnalysis('tImages/t7.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'normal'
+        data = self.extractData('tImages/t7.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'normal'
+        assert data['crossingPosition'] == 'medium'
 
     def test_image8(self):
-        analysis = self.getAnalysis('tImages/t8.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'normal'
+        data = self.extractData('tImages/t8.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'normal'
+        assert data['crossingPosition'] == 'medium'
 
     def test_image9(self):
-        analysis = self.getAnalysis('tImages/t9.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'normal'
+        data = self.extractData('tImages/t9.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'normal'
+        assert data['crossingPosition'] == 'high'
 
     def test_image10(self):
-        analysis = self.getAnalysis('tImages/t10.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'normal'
+        data = self.extractData('tImages/t10.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'normal'
+        assert data['crossingPosition'] == 'medium'
 
     def test_image11(self):
-        analysis = self.getAnalysis('tImages/t11.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'normal'
+        data = self.extractData('tImages/t11.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'normal'
+        assert data['crossingPosition'] == 'medium'
 
     def test_image12(self):
-        analysis = self.getAnalysis('tImages/t12.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'falling'
-        assert analysis['crossingLength'] == 'normal'
+        data = self.extractData('tImages/t12.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'falling'
+        assert data['crossingLength'] == 'normal'
+        assert data['crossingPosition'] == 'high'
 
     def test_image13(self):
-        analysis = self.getAnalysis('tImages/t13.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'long'
+        data = self.extractData('tImages/t13.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'long'
+        assert data['crossingPosition'] == 'medium'
 
     def test_image14(self):
-        analysis = self.getAnalysis('tImages/t14.png')
-        assert analysis['labelTrend'] == 'rising'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'normal'
+        data = self.extractData('tImages/t14.png')
+        assert data['labelTrend'] == 'rising'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'normal'
+        assert data['crossingPosition'] == 'medium'
 
     def test_image15(self):
-        analysis = self.getAnalysis('tImages/t15.png')
-        assert analysis['labelTrend'] == 'falling'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'long'
+        data = self.extractData('tImages/t15.png')
+        assert data['labelTrend'] == 'falling'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'long'
+        assert data['crossingPosition'] == 'high'
 
     def test_image16(self):
-        analysis = self.getAnalysis('tImages/t16.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'long'
+        data = self.extractData('tImages/t16.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'long'
+        assert data['crossingPosition'] == 'high'
 
     def test_image17(self):
-        analysis = self.getAnalysis('tImages/t17.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'constant'
-        assert analysis['crossingLength'] == 'long'
+        data = self.extractData('tImages/t17.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'constant'
+        assert data['crossingLength'] == 'long'
+        assert data['crossingPosition'] == 'medium'
 
     def test_image18(self):
-        analysis = self.getAnalysis('tImages/t18.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'rising'
-        assert analysis['crossingLength'] == 'long'
+        data = self.extractData('tImages/t18.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'rising'
+        assert data['crossingLength'] == 'long'
+        assert data['crossingPosition'] == 'medium'
 
     def test_image19(self):
-        analysis = self.getAnalysis('tImages/t19.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'falling'
-        assert analysis['crossingLength'] == 'long'
+        data = self.extractData('tImages/t19.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'falling'
+        assert data['crossingLength'] == 'long'
+        assert data['crossingPosition'] == 'high'
 
     def test_image20(self):
-        analysis = self.getAnalysis('tImages/t20.png')
-        assert analysis['labelTrend'] == 'vertical'
-        assert analysis['labelThickness'] == 'falling'
-        assert analysis['crossingLength'] == 'long'
+        data = self.extractData('tImages/t20.png')
+        assert data['labelTrend'] == 'vertical'
+        assert data['labelThickness'] == 'falling'
+        assert data['crossingLength'] == 'long'
+        assert data['crossingPosition'] == 'high'
 
-    def getAnalysis(self, imageFile):
+    def extractData(self, imageFile):
         img = cv2.imread(imageFile)
         extractor = TDataExtractor(img)
         extractor.analyze()
-        analysis = extractor.getAnalysis()
+        analysis = extractor.getData()
         return analysis

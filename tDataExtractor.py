@@ -27,6 +27,7 @@ class TDataExtractor:
         self.leftEdgeStem = []
         self.rightEdgeStem = []
         self.stemThickness = []
+        self.crossingPoint = (0, 0)
 
     def drawPoints(self, points, color):
         for point in points:
@@ -285,7 +286,6 @@ class TDataExtractor:
         stemLength =self.stemCore[len(self.stemCore)-1][1]-self.stemCore[0][1] +0.0
         labelLength= self.labelCore[len(self.labelCore)-1][0]-self.labelCore[0][0] +0.0
         ratio = stemLength/labelLength -1.2
-        print ratio
         if(abs(ratio)< 0.25):
             return "normal"
         else:
@@ -294,16 +294,49 @@ class TDataExtractor:
             else:
                 return "long"
 
+    def getCrossingPositionAnalysis(self):
+
+        if self.crossingPoint == (0,0):
+            crossingPointY = 0
+            for p in self.labelCore:
+                crossingPointY += p[1]
+            crossingPointY /= len(self.labelCore)
+        else:
+            crossingPointY = self.crossingPoint[1]
+
+        stemMaxY= self.stemCore[len(self.stemCore)-1][1]
+        stemMinY= self.stemCore[0][1]
+
+        relativeMax = stemMaxY - stemMinY
+        relativeCrossing = crossingPointY - stemMinY
+        ratio = (relativeCrossing * 1.0) /relativeMax - 0.6
+
+        if (abs(ratio) < 0.31):
+            return "medium"
+        else:
+            if ratio < 0:
+                return "high"
+            else:
+                return "low"
+
+    def findCrossingPoint(self):
+        self.crossingPoint = (0, 0)
+        for corePoint in self.stemCore:
+            for stemPoint in self.labelCore:
+                if abs(corePoint[0]-stemPoint[0]) + abs(corePoint[1]-stemPoint[1]) < 5:
+                    self.crossingPoint = corePoint
 
     def analyze(self):
         self.preprocessImage()
         self.findTopLabel()
         self.findStem()
+        self.findCrossingPoint()
 
         self.drawAll()
         self.analysis["labelTrend"] = self.getLabelTrend()
         self.analysis["labelThickness"] = self.getLabelThicknessAnalysis()
         self.analysis["crossingLength"] = self.getCrossingLengthAnalysis()
+        self.analysis["crossingPosition"] = self.getCrossingPositionAnalysis()
 
     def drawAll(self):
         self.drawPoints(self.topEdgeLabel, Colors.blue)
@@ -313,7 +346,9 @@ class TDataExtractor:
         self.drawPoints(self.leftEdgeStem, Colors.orange)
         self.drawPoints(self.labelCore, Colors.red)
 
-    def getAnalysis(self):
+        cv2.circle(self.img, self.crossingPoint, 5, Colors.red, -1)
+
+    def getData(self):
         return self.analysis
 
     def getResultImg(self):
@@ -326,13 +361,13 @@ class TDataExtractor:
 
 if __name__ == '__main__':
 
-    for i in range(20,21):
+    for i in range(8,9):
         img = cv2.imread('tImages/t' + str(i) + '.png')
 
         extractor = TDataExtractor(img)
         extractor.analyze()
 
-        analysis = extractor.getAnalysis()
+        analysis = extractor.getData()
         resultImg = extractor.getResultImg()
         cv2.imshow("result" + str(i), resultImg)
         print "image :", str(i)
