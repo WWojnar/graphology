@@ -7,7 +7,6 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from labelLmb import LabelWithLmb
 
 class Ui_Slantchecker(object):
     def setupUi(self, Slantchecker):
@@ -36,7 +35,7 @@ class Ui_Slantchecker(object):
         self.spareButton.setObjectName("spareButton")
         self.verticalLayout.addWidget(self.spareButton)
         self.gridLayout.addWidget(self.groupBox, 2, 2, 1, 1)
-        self.mainPicture = LabelWithLmb(self.mainContainer)
+        self.mainPicture = QtWidgets.QLabel(self.mainContainer)
         self.mainPicture.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.mainPicture.setText("")
         self.mainPicture.setObjectName("mainPicture")
