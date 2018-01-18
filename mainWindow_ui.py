@@ -43,7 +43,6 @@ class Ui_Graphology(object):
         self.analysis.setFlat(False)
         self.analysis.setObjectName("analysis")
         self.gridLayout.addWidget(self.analysis, 0, 1, 1, 1)
-        self.analysis.clicked.connect(self.grabPartOfPicture)
         self.featureBox = QtWidgets.QGroupBox(self.mainContainer)
         self.featureBox.setObjectName("featureBox")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.featureBox)
@@ -67,7 +66,7 @@ class Ui_Graphology(object):
         self.mainPicture.setFrameShadow(QtWidgets.QFrame.Raised)
         self.mainPicture.setLineWidth(3)
         self.mainPicture.setObjectName("mainPicture")
-        self.mainPicture.setAlignment(QtCore.Qt.AlignCenter)
+        self.mainPicture.setAlignment(QtCore.Qt.AlignLeft)
         self.gridLayout.addWidget(self.mainPicture, 1, 0, 2, 4)
         self.scrollArea = QtWidgets.QScrollArea(self.mainContainer)
         self.scrollArea.setMinimumSize(QtCore.QSize(0, 0))
@@ -121,7 +120,3 @@ class Ui_Graphology(object):
         pixmap = QtGui.QPixmap(picture_file_path)
         pixmap_resized = pixmap.scaled(self.mainPicture.size(), QtCore.Qt.KeepAspectRatio)
         self.mainPicture.setPixmap(pixmap_resized)
-
-    def grabPartOfPicture(self):
-        self.pixmap = self.mainPicture.pixMapToShare
-

@@ -15,10 +15,9 @@ class MainWindow(QMainWindow, mainWindow_ui.Ui_Graphology):
         self.slantChecker = SlantWindow()
 
     def openSlantChecker(self):
-
         pixmap = self.mainPicture.pixMapToShare
-        print self.slantChecker.mainPicture.size()
         pixmap_resized = pixmap.scaled(self.slantChecker.mainPicture.size(), QtCore.Qt.KeepAspectRatio)
+        self.slantChecker.pixmapCopy = pixmap_resized
         self.slantChecker.mainPicture.setPixmap(pixmap_resized)
         self.slantChecker.show()
 
@@ -28,17 +27,18 @@ class SlantWindow(QMainWindow, slantWindow_ui.Ui_Slantchecker):
     def __init__(self, parent=None):
         super(SlantWindow,self).__init__(parent)
         self.setupUi(self)
+        self.pixmapCopy = 0
+        self.angleSlider.valueChanged.connect(self.onChange)
+        self.distanceSlider.valueChanged.connect(self.onChange)
 
-        self.mainPicture.installEventFilter(self)
+    def onChange(self):
+        self.angleCount.setNum(self.angleSlider.value())
+        self.distanceCount.setNum(self.distanceSlider.value())
 
-    def eventFilter(self, source, event):
-        if event.type() == QtCore.QEvent.MouseButtonPress:
-            print "The sender is:", source.text(), event.pos()
-        return super(SlantWindow, self).eventFilter(source, event)
+        currentQRect = self.mainPicture.geometry()
+        self.cropQPixmap = self.pixmap().copy(currentQRect)
 
-
-
-
+        self.pixMapBackup.save("samples/sample1.png", "PNG")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

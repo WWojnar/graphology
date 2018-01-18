@@ -2,7 +2,7 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 
 class RubberbandEnhancedLabel(QtWidgets.QLabel):
 
-    pixMapToShare = 0
+    cropQPixmap = 0
     def __init__(self, parent=None):
         QtWidgets.QLabel.__init__(self, parent)
         self.selection = QtWidgets.QRubberBand(QtWidgets.QRubberBand.Rectangle, self)
@@ -20,6 +20,8 @@ class RubberbandEnhancedLabel(QtWidgets.QLabel):
                     self.mode = "drag_lower_right"
                 else:
                     # clicked somewhere else, hide selection
+                    self.pixMapToShare = self.cropQPixmap
+
                     self.selection.hide()
             else:
                 # no visible selection, start new selection
@@ -27,9 +29,6 @@ class RubberbandEnhancedLabel(QtWidgets.QLabel):
                 self.lower_right = position
                 self.mode = "drag_lower_right"
                 self.selection.show()
-
-    def str_join(*args):
-        return ''.join(map(str, args))
 
     def mouseMoveEvent(self, event):
         if self.selection.isVisible():
@@ -40,7 +39,7 @@ class RubberbandEnhancedLabel(QtWidgets.QLabel):
                 self.upper_left = QtCore.QPoint(event.pos())
             # update geometry
             self.selection.setGeometry(QtCore.QRect(self.upper_left, self.lower_right).normalized())
-            cropQPixmap = self.pixmap().copy(self.selection.geometry())
-            self.pixMapToShare = cropQPixmap
+            currentQRect = self.selection.geometry()
+            self.cropQPixmap = self.pixmap().copy(currentQRect)
 
 
