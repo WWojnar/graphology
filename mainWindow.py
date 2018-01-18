@@ -35,10 +35,7 @@ class SlantWindow(QMainWindow, slantWindow_ui.Ui_Slantchecker):
         self.angleCount.setNum(self.angleSlider.value())
         self.distanceCount.setNum(self.distanceSlider.value())
 
-        currentQRect = self.mainPicture.geometry()
-        self.cropQPixmap = self.pixmap().copy(currentQRect)
-
-        self.pixMapBackup.save("samples/sample1.png", "PNG")
+        #self.pixmapCopy.save("samples/sample1.png", "PNG")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
