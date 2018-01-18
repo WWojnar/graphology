@@ -1,35 +1,58 @@
-from PyQt5 import QtWidgets
-import sys
+# -*- coding: utf-8 -*-
 
-from PyQt5 import QtCore, QtWidgets, QtGui
+# Form implementation generated from reading ui file 'slantChecker.ui'
+#
+# Created by: PyQt5 UI code generator 5.6
+#
+# WARNING! All changes made in this file will be lost!
 
+from PyQt5 import QtCore, QtGui, QtWidgets
+from labelLmb import LabelWithLmb
 
 class Ui_Slantchecker(object):
     def setupUi(self, Slantchecker):
-        Slantchecker.setObjectName("SlantChecker")
-        Slantchecker.resize(600, 800)
+        Slantchecker.setObjectName("slantChecker")
+        Slantchecker.resize(894, 507)
+        Slantchecker.setAutoFillBackground(False)
         self.mainContainer = QtWidgets.QWidget(Slantchecker)
-        self.mainContainer.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.mainContainer.setObjectName("mainContainer")
         self.gridLayout = QtWidgets.QGridLayout(self.mainContainer)
-        self.gridLayout.setContentsMargins(12, 12, 12, 12)
-        self.gridLayout.setHorizontalSpacing(40)
-        self.gridLayout.setVerticalSpacing(12)
         self.gridLayout.setObjectName("gridLayout")
-        self.mainPicture = QtWidgets.QLabel(self.mainContainer)
-        self.mainPicture.setAutoFillBackground(True)
-        self.mainPicture.setFrameShape(QtWidgets.QFrame.Box)
-        self.mainPicture.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.mainPicture.setLineWidth(3)
+        self.analysis = QtWidgets.QLabel(self.mainContainer)
+        self.analysis.setFrameShape(QtWidgets.QFrame.WinPanel)
+        self.analysis.setObjectName("analysis")
+        self.gridLayout.addWidget(self.analysis, 1, 2, 1, 1)
+        self.groupBox = QtWidgets.QGroupBox(self.mainContainer)
+        self.groupBox.setObjectName("groupBox")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.groupBox)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.clearButton = QtWidgets.QPushButton(self.groupBox)
+        self.clearButton.setObjectName("clearButton")
+        self.verticalLayout.addWidget(self.clearButton)
+        self.saveButton = QtWidgets.QPushButton(self.groupBox)
+        self.saveButton.setObjectName("saveButton")
+        self.verticalLayout.addWidget(self.saveButton)
+        self.spareButton = QtWidgets.QPushButton(self.groupBox)
+        self.spareButton.setObjectName("spareButton")
+        self.verticalLayout.addWidget(self.spareButton)
+        self.gridLayout.addWidget(self.groupBox, 2, 2, 1, 1)
+        self.mainPicture = LabelWithLmb(self.mainContainer)
+        self.mainPicture.setFrameShape(QtWidgets.QFrame.WinPanel)
+        self.mainPicture.setText("")
         self.mainPicture.setObjectName("mainPicture")
         self.mainPicture.setAlignment(QtCore.Qt.AlignCenter)
-        self.mainPicture.setFixedSize(100,100)
-        self.sliderDistance = QtWidgets.QSlider(QtCore.Qt.Horizontal)
-        self.gridLayout.addWidget(self.sliderDistance)
-        self.sliderAngle = QtWidgets.QSlider(QtCore.Qt.Horizontal)
-        self.gridLayout.addWidget(self.sliderAngle)
+        self.gridLayout.addWidget(self.mainPicture, 1, 1, 2, 1)
         Slantchecker.setCentralWidget(self.mainContainer)
-        self.statusBar = QtWidgets.QStatusBar(Slantchecker)
-        self.statusBar.setObjectName("statusBar")
-        Slantchecker.setStatusBar(self.statusBar)
+
+        self.retranslateUi(Slantchecker)
         QtCore.QMetaObject.connectSlotsByName(Slantchecker)
+
+    def retranslateUi(self, slantChecker):
+        _translate = QtCore.QCoreApplication.translate
+        slantChecker.setWindowTitle(_translate("slantChecker", "Slant Checker"))
+        self.analysis.setText(_translate("slantChecker", "Analysis"))
+        self.groupBox.setTitle(_translate("slantChecker", "Operations"))
+        self.clearButton.setText(_translate("slantChecker", "Clear"))
+        self.saveButton.setText(_translate("slantChecker", "Save"))
+        self.spareButton.setText(_translate("slantChecker", "Optional"))
+

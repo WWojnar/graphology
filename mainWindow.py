@@ -15,8 +15,10 @@ class MainWindow(QMainWindow, mainWindow_ui.Ui_Graphology):
         self.slantChecker = SlantWindow()
 
     def openSlantChecker(self):
+
         pixmap = self.mainPicture.pixMapToShare
-        pixmap_resized = pixmap.scaled(self.slantChecker.size(), QtCore.Qt.KeepAspectRatio)
+        print self.slantChecker.mainPicture.size()
+        pixmap_resized = pixmap.scaled(self.slantChecker.mainPicture.size(), QtCore.Qt.KeepAspectRatio)
         self.slantChecker.mainPicture.setPixmap(pixmap_resized)
         self.slantChecker.show()
 
@@ -26,6 +28,15 @@ class SlantWindow(QMainWindow, slantWindow_ui.Ui_Slantchecker):
     def __init__(self, parent=None):
         super(SlantWindow,self).__init__(parent)
         self.setupUi(self)
+
+        self.mainPicture.installEventFilter(self)
+
+    def eventFilter(self, source, event):
+        if event.type() == QtCore.QEvent.MouseButtonPress:
+            print "The sender is:", source.text(), event.pos()
+        return super(SlantWindow, self).eventFilter(source, event)
+
+
 
 
 

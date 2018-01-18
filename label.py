@@ -4,7 +4,6 @@ class RubberbandEnhancedLabel(QtWidgets.QLabel):
 
     pixMapToShare = 0
     def __init__(self, parent=None):
-        self.counter = 0
         QtWidgets.QLabel.__init__(self, parent)
         self.selection = QtWidgets.QRubberBand(QtWidgets.QRubberBand.Rectangle, self)
 
@@ -24,7 +23,6 @@ class RubberbandEnhancedLabel(QtWidgets.QLabel):
                     self.selection.hide()
             else:
                 # no visible selection, start new selection
-                self.counter += 1
                 self.upper_left = position
                 self.lower_right = position
                 self.mode = "drag_lower_right"
@@ -43,7 +41,6 @@ class RubberbandEnhancedLabel(QtWidgets.QLabel):
             # update geometry
             self.selection.setGeometry(QtCore.QRect(self.upper_left, self.lower_right).normalized())
             cropQPixmap = self.pixmap().copy(self.selection.geometry())
-            cropQPixmap.save("samples/sample%s.jpg" % self.counter)
             self.pixMapToShare = cropQPixmap
 
 

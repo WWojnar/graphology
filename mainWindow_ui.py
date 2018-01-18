@@ -9,7 +9,6 @@
 
 from PyQt5 import QtCore, QtWidgets, QtGui
 from label import RubberbandEnhancedLabel
-from slant_check_window2 import Ui_Slantchecker
 import Tkinter as tk
 import tkFileDialog
 
