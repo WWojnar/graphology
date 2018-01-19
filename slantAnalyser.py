@@ -40,7 +40,7 @@ class SlantAnalyser:
             "slantType": "extremely inclined",
             "analysis": "volcano of emotional reactions: extremely ardent, passionate, "
                         "jealous, easily offended, very demonstrative with affections, "
-                        "susceptible to hurt arid can hate bitterly and with abandon, loves the same way,"
+                        "susceptible to hurt arid can hate bitterly and with abandon, loves the same way"
         }
     ]
 

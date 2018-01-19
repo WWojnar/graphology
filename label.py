@@ -21,7 +21,7 @@ class RubberbandEnhancedLabel(QtWidgets.QLabel):
                 else:
                     # clicked somewhere else, hide selection
                     self.pixMapToShare = self.cropQPixmap
-
+                    self.pixMapToShare.save("samples/sample2.png","PNG")
                     self.selection.hide()
             else:
                 # no visible selection, start new selection
