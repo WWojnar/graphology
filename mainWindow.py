@@ -1,18 +1,16 @@
-import sys, os
+import sys, os, cv2
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget
-import cv2
 import numpy as np
-import mainWindow_ui
-import slantWindow_ui
-import zoneWindow_ui
-import tChecker_ui
 from slantAnalyser import SlantAnalyser
 from zonesAnalyzer import ZonesAnalyzer
 from tDataExtractor import Colors, TDataExtractor
+from dist_analyzer import DistAnalyzer
 from tAnalyzer import TAnalyzer
+import mainWindow_ui, slantWindow_ui, zoneWindow_ui, tChecker_ui, distWindow_ui, tkFileDialog
 import Tkinter as tk
-import tkFileDialog
+import json
+
 
 
 graphology = None
@@ -26,9 +24,11 @@ class MainWindow(QMainWindow, mainWindow_ui.Ui_Graphology):
         self.buttonSlant.clicked.connect(self.openSlantChecker)
         self.buttonZone.clicked.connect(self.openZoneChecker)
         self.buttonT.clicked.connect(self.openTAnalyzer)
+        self.buttonDist.clicked.connect(self.openDistChecker)
         self.slantChecker = SlantWindow()
         self.zoneChecker = ZoneWindow()
         self.tAnalyzer = TWindow()
+        self.distChecker = DistWindow()
 
 
     def loadImageMethod(self):
@@ -66,6 +66,14 @@ class MainWindow(QMainWindow, mainWindow_ui.Ui_Graphology):
         self.tAnalyzer.mainPicture.setPixmap(pixmap_resized)
         self.tAnalyzer.show()
 
+    def openDistChecker(self):
+        pixmap = self.mainPicture.pixMapToShare
+        pixmap_resized = pixmap.scaled(self.distChecker.mainPicture.size(), QtCore.Qt.KeepAspectRatio,
+                                       QtCore.Qt.SmoothTransformation)
+        pixmap_resized.save("samples/sample1.png", "PNG")
+        self.distChecker.mainPicture.setPixmap(pixmap_resized)
+        self.distChecker.distCheckerChangeSliders()
+        self.distChecker.show()
 
 
 class SlantWindow(QMainWindow, slantWindow_ui.Ui_Slantchecker):
@@ -104,6 +112,7 @@ class SlantWindow(QMainWindow, slantWindow_ui.Ui_Slantchecker):
         qImg = QtGui.QImage(img.data, width, height, bytesPerLine, QtGui.QImage.Format_RGB888)
         qPixToCover = QtGui.QPixmap.fromImage(qImg)
         self.mainPicture.setPixmap(qPixToCover)
+
 
 class ZoneWindow(QMainWindow, zoneWindow_ui.Ui_Zonechecker):
 
@@ -145,8 +154,8 @@ class ZoneWindow(QMainWindow, zoneWindow_ui.Ui_Zonechecker):
 
         separators = [upperZoneTop, middleZoneTop, bottomZoneTop, bottomZoneBottom]
         text = ZonesAnalyzer.analyze(separators)
-        print text
-        #self.analysis.setText(text[0] + "\n" + text[1])
+        json_string = json.dumps(text)
+        self.analysis.setText(json_string)
 
 
         height, width, channel = img.shape
@@ -155,6 +164,45 @@ class ZoneWindow(QMainWindow, zoneWindow_ui.Ui_Zonechecker):
         qPixToCover = QtGui.QPixmap.fromImage(qImg)
         self.mainPicture.setPixmap(qPixToCover)
 
+
+class DistWindow(QMainWindow, distWindow_ui.Ui_Distchecker):
+
+    def __init__(self, parent=None):
+        super(DistWindow,self).__init__(parent)
+        self.setupUi(self)
+        self.bottomSlider.valueChanged.connect(self.onChange)
+        self.topSlider.valueChanged.connect(self.onChange)
+        # self.mainPicture.mousePressEvent(self, self.getClickPosition)
+
+
+    def onChange(self):
+        self.bottomCount.setNum(self.bottomSlider.value())
+        self.topCount.setNum(self.topSlider.value())
+
+        img = cv2.imread("samples/sample1.png", -1)
+
+        top =  self.topSlider.value()
+        bottom = self.bottomSlider.value()
+
+        cv2.line(img, (0, bottom), (20000, bottom), (255, 0, 0), 1)
+        cv2.line(img, (0, top), (20000, bottom), (255, 0, 0), 1)
+
+        self.text = bottom - top
+
+        height, width, channel = img.shape
+        bytesPerLine = 3 * width
+        qImg = QtGui.QImage(img.data, width, height, bytesPerLine, QtGui.QImage.Format_RGB888)
+        qPixToCover = QtGui.QPixmap.fromImage(qImg)
+        self.mainPicture.setPixmap(qPixToCover)
+
+    def distCheckerChangeSliders(self):
+        img = cv2.imread("samples/sample1.png", -1)
+        height, width = img.shape[:2]
+        self.bottomSlider.setRange(0, height)
+        self.topSlider.setRange(0, height)
+
+    def getClickPosition(self,event):
+        print event.pos()
 
 
 class TWindow(QMainWindow, tChecker_ui.Ui_Tanalyzer):
@@ -179,11 +227,18 @@ class TWindow(QMainWindow, tChecker_ui.Ui_Tanalyzer):
         print 'analysis:'
         print TAnalyzer.analyze(data)
 
+        json_string = json.dumps(TAnalyzer.analyze(data))
+        self.analysis.setText(json_string)
+
         height, width, channel = resultImg.shape
         bytesPerLine = 3 * width
         qImg = QtGui.QImage(resultImg.data, width, height, bytesPerLine, QtGui.QImage.Format_RGB888)
         qPixToCover = QtGui.QPixmap.fromImage(qImg)
         self.mainPicture.setPixmap(qPixToCover)
+
+
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
