@@ -6,10 +6,14 @@ import numpy as np
 import mainWindow_ui
 import slantWindow_ui
 import zoneWindow_ui
+import tChecker_ui
 from slantAnalyser import SlantAnalyser
 from zonesAnalyzer import ZonesAnalyzer
+from tDataExtractor import Colors, TDataExtractor
+from tAnalyzer import TAnalyzer
 import Tkinter as tk
 import tkFileDialog
+
 
 graphology = None
 
@@ -21,8 +25,10 @@ class MainWindow(QMainWindow, mainWindow_ui.Ui_Graphology):
         self.btnLoadImage.clicked.connect(self.loadImageMethod)
         self.buttonSlant.clicked.connect(self.openSlantChecker)
         self.buttonZone.clicked.connect(self.openZoneChecker)
+        self.buttonT.clicked.connect(self.openTAnalyzer)
         self.slantChecker = SlantWindow()
         self.zoneChecker = ZoneWindow()
+        self.tAnalyzer = TWindow()
 
 
     def loadImageMethod(self):
@@ -52,6 +58,13 @@ class MainWindow(QMainWindow, mainWindow_ui.Ui_Graphology):
         self.zoneChecker.zoneCheckerChangeSliders()
         self.zoneChecker.show()
 
+    def openTAnalyzer(self):
+        pixmap = self.mainPicture.pixMapToShare
+        pixmap_resized = pixmap.scaled(self.tAnalyzer.mainPicture.size(), QtCore.Qt.KeepAspectRatio,
+                                       QtCore.Qt.SmoothTransformation)
+        pixmap_resized.save("samples/sample1.png", "PNG")
+        self.tAnalyzer.mainPicture.setPixmap(pixmap_resized)
+        self.tAnalyzer.show()
 
 
 
@@ -143,6 +156,34 @@ class ZoneWindow(QMainWindow, zoneWindow_ui.Ui_Zonechecker):
         self.mainPicture.setPixmap(qPixToCover)
 
 
+
+class TWindow(QMainWindow, tChecker_ui.Ui_Tanalyzer):
+
+    def __init__(self, parent=None):
+        super(TWindow,self).__init__(parent)
+        self.setupUi(self)
+        self.analyzeButton.clicked.connect(self.tAnalyzing)
+
+    def tAnalyzing(self):
+        img = cv2.imread("samples/sample1.png", -1)
+
+        extractor = TDataExtractor(img)
+        extractor.analyze()
+
+        data = extractor.getData()
+        resultImg = extractor.getResultImg()
+
+        print 'got data:'
+        print data
+
+        print 'analysis:'
+        print TAnalyzer.analyze(data)
+
+        height, width, channel = resultImg.shape
+        bytesPerLine = 3 * width
+        qImg = QtGui.QImage(resultImg.data, width, height, bytesPerLine, QtGui.QImage.Format_RGB888)
+        qPixToCover = QtGui.QPixmap.fromImage(qImg)
+        self.mainPicture.setPixmap(qPixToCover)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
